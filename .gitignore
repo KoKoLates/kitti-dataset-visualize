@@ -184,3 +184,6 @@ cython_debug/
 *.exe
 *.out
 *.app
+
+# vscode
+.vscode/
