@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="kitti_dataset_visualization" type="main.py" name="kitti_node" />
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find kitti_dataset_visualization)/rviz/kitti.rviz" />
+</launch>
