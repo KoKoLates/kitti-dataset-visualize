@@ -9,7 +9,6 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 set(OPENCV_DIR /usr/share/opencv4)
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
   rospy
   std_msgs
   image_transport

@@ -5,12 +5,24 @@ import numpy as np
 import pandas as pd
 
 def read_img(path: str) -> cv2.Mat:
+    """
+    @paran path: the path of image
+    @return: images
+    """
     return cv2.imread(path)
 
 def read_pcl(path: str) -> np.ndarray:
+    """
+    @param path: the path of point cloud map file
+    @return: the point cloud map in np.ndarray format.
+    """
     return np.fromfile(path, dtype=np.float32).reshape(-1, 4)
 
-def read_imu(path: str) -> np.ndarray:
+def read_imu(path: str) -> pd.DataFrame:
+    """
+    @param path:
+    @return:
+    """
     df = pd.read_csv(path, header=None, sep=' ')
     df.columns = [
         'lat', 'lon', 'alt', 'roll', 'pitch', 'yaw', 'vn', 've', 'vf', 'vl', 'vu', 
@@ -18,3 +30,15 @@ def read_imu(path: str) -> np.ndarray:
         'posacc', 'velacc', 'navstat', 'numsats', 'posmode', 'velmode', 'orimode'
     ]
     return df 
+
+def read_tracking(path: str) -> pd.DataFrame:
+    df = pd.read_csv(path, header=None, sep=' ')
+    df.columns = [
+        'frame', 'track_id', 'type', 'truncated', 'occluded', 'alpha', 'bbox_left', 'bbox_top',
+        'bbox_right', 'bbox_bottom', 'height', 'width', 'length', 'pos_x', 'pos_y', 'pos_z', 'rot_y'
+    ]
+
+    # clean the tracking dataset
+    df.loc[df.type.isin(['Truck', 'Van', 'Tram']), 'type'] = 'Car'
+    df = df[df.type.isin(['Car', 'Cyclist', 'Pedestrian'])]
+    return df
