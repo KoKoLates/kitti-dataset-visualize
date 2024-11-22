@@ -1,16 +1,5 @@
-# kitti-dataset-visualization
-Visualize the kitti dataset for learning self driving vehicle techniques.
-
-## Contents
-* [dataset visualization](#dataset-visualization)
-* [stereo visual odometry](#stereo-visual-odometry)
-
-
-## Environments and Setup
-* `$ cd catkin_ws/src`
-* `$ git clone https://url`
-* `$ cd .. && catkin_make`
-
+# Kitti Dataset Visualization
+Visualize bounding boxes and point cloud map on ROS. And also implements stereo visual odometry based on kitti dataset
 
 ## Dataset Visualization
 Visualization and manipulation of raw data from multiple sensor of kitti dataset on ros, including video streaming, point cloud from lidar, GPS and IMU.
