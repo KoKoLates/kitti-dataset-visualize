@@ -1,6 +1,5 @@
-# kitti-dataset-visualize
-Visualize the kitti dataset for learning self driving vehicle techniques.
-
+# Kitti Dataset Visualization
+Visualize bounding boxes and point cloud map on ROS. And also implements stereo visual odometry based on kitti dataset
 
 ## Dataset Visualization
 Visualization and manipulation of raw data from multiple sensor of kitti dataset on ros, including video streaming, point cloud from lidar, GPS and IMU.
