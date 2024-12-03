@@ -1,15 +1,5 @@
-# kitti-dataset-visualization
+# kitti-dataset-visualize
 Visualize the kitti dataset for learning self driving vehicle techniques.
-
-## Contents
-* [dataset visualization](#dataset-visualization)
-* [stereo visual odometry](#stereo-visual-odometry)
-
-
-## Environments and Setup
-* `$ cd catkin_ws/src`
-* `$ git clone https://url`
-* `$ cd .. && catkin_make`
 
 
 ## Dataset Visualization
@@ -17,6 +7,18 @@ Visualization and manipulation of raw data from multiple sensor of kitti dataset
 
 * Multi-sensor visualization
 * Object detection and bounding box.
+
+<div align="center">
+  <video width="650" controls>
+    <source src="./assets/video2.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div align="center">
+  <video width="650" controls>
+    <source src="./assets/video1.mp4" type="video/mp4">
+  </video>
+</div>
 
 
 ## Stereo Visual Odometry
