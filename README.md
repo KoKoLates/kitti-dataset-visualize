@@ -9,7 +9,6 @@ Visualization and manipulation of raw data from multiple sensor of kitti dataset
 
 <div align="center">
   <img src="./assets/point_cloud_map.gif" alt="point cloud map" width="700">
-  <img src="./assets/camera.gif" alt="camera" width="700">
 </div>
 
 
