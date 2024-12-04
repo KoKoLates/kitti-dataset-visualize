@@ -8,15 +8,8 @@ Visualization and manipulation of raw data from multiple sensor of kitti dataset
 * Object detection and bounding box.
 
 <div align="center">
-  <video width="650" controls>
-    <source src="./assets/video2.mp4" type="video/mp4">
-  </video>
-</div>
-
-<div align="center">
-  <video width="650" controls>
-    <source src="./assets/video1.mp4" type="video/mp4">
-  </video>
+  <img src="./assets/point_cloud_map.gif" alt="point cloud map" width="700">
+  <img src="./assets/camera.gif" alt="camera" width="700">
 </div>
 
 
@@ -26,6 +19,11 @@ Using the stereo image captured from the kitti dataset to predict the depth and 
 * Disparity map of stereo vision
 * Depth estimation
 * Visual odometry and accuracy metric.
+
+<div align="center">
+  <img src="./assets/disparity_map.png" alt="disparity" width="600">
+  <img src="./assets/depth_map.png" alt="depth map" width="600">
+</div>
 
 ## Reference
 * [kitti dataset](https://www.cvlibs.net/datasets/kitti/)
