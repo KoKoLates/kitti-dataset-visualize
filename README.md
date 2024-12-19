@@ -1,15 +1,14 @@
 # Kitti Dataset Visualization
-Visualize bounding boxes and point cloud map on ROS. And also implements stereo visual odometry based on kitti dataset
+Visualize the point cloud map, distance, trajectory, and object bounding boxes with ROS Rviz. And also implements stereo visual odometry with stereo disparity map and stereo depth estimation.
 
 ## Dataset Visualization
-Visualization and manipulation of raw data from multiple sensor of kitti dataset on ros, including video streaming, point cloud from lidar, GPS and IMU.
-
+Visualization and manipulation of raw data from multiple sensors of the KITTI dataset on ROS RViz, including video streaming, point clouds from LiDAR, GPS, and IMU data.
 * Multi-sensor visualization
 * Object detection and bounding box.
 
 <div align="center">
-  <img src="./assets/point_cloud_map.gif" alt="point cloud map" width="700">
-  <img src="./assets/camera.gif" alt="camera" width="700">
+  <img src="./assets/point-cloud-map.PNG" alt="point cloud map" width="700">
+  <img src="./assets/object-detecting.PNG" alt="camera" width="700">
 </div>
 
 
@@ -21,8 +20,8 @@ Using the stereo image captured from the kitti dataset to predict the depth and 
 * Visual odometry and accuracy metric.
 
 <div align="center">
-  <img src="./assets/disparity_map.png" alt="disparity" width="600">
-  <img src="./assets/depth_map.png" alt="depth map" width="600">
+  <img src="./assets/disparity-map.png" alt="disparity" width="600">
+  <img src="./assets/depth-map.png" alt="depth map" width="600">
 </div>
 
 ## Reference
