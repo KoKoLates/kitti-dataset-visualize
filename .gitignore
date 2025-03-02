@@ -187,3 +187,7 @@ cython_debug/
 
 # vscode
 .vscode/
+
+# dataset
+dataset/
+dataset.zip
