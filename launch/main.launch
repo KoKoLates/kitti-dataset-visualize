@@ -1,4 +1,16 @@
 <launch>
-    <node pkg="kitti_dataset_visualization" type="main.py" name="kitti_node" />
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find kitti_dataset_visualization)/rviz/kitti.rviz" />
+    <!-- arguments for the dataset settings -->
+    <arg name="calib" default="" />
+    <arg name="track" default="" />
+    <arg name="value" default="" />
+
+    <!-- kitti node -->
+    <node pkg="kitti_dataset_visualize" type="main.py" name="kitti_node">
+        <param name="calib" value="$(arg calib)" />
+        <param name="track" value="$(arg track)" />
+        <param name="value" value="$(arg value)" />
+    </node>
+
+    <!-- rviz -->
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find kitti_dataset_visualize)/rviz/kitti.rviz" />
 </launch>

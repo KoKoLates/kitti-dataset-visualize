@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>kitti_dataset_visualization</name>
+  <name>kitti_dataset_visualize</name>
   <version>0.0.0</version>
   <description>The kitti_dataset_visualization package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="aiseed@todo.todo">aiseed</maintainer>
+  <maintainer email="the21515@gmail.com">KoKoLates</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>MIT</license>
 
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
