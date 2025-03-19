@@ -21,5 +21,16 @@ Using the stereo image captured from the kitti dataset to predict the depth and 
 * Depth estimation
 * Visual odometry and accuracy metric.
 
+<div align="center">
+  <img src="./assets/stereo_bm.png" alt="stereo bm matcher" width="600">
+  <img src="./assets/stereo_sgbm.png" alt="stereo sgbm matcher" width="600">
+</div>
+
+Matching the disparity map by stereo vision with `BM` and `SGBM` matcher respectively. And based on the disparity map, derived the depth map with intrinsic parameter of left camera.
+
+<div align="center">
+  <img src="./assets/depth_map.png" alt="depth map" width="600">
+</div>
+
 ## Reference
 * [kitti dataset](https://www.cvlibs.net/datasets/kitti/)
