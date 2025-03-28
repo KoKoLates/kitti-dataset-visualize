@@ -1,3 +1,0 @@
-# Notebooks
-
-This folder contains two notebooks. The `dev` notebook is used for exploring the dataset and testing each part of the visual odometry pipeline in simple functions, including camera projection and calibration, stereo depth estimation, LiDAR depth correction, and feature extraction and matching. On the other hand, the `main` notebook implements the visual odometry. This file contains a dataset handler with three generators to load images and Velodyne data from files, a visual odometry class, and error evaluation functions. I have also set up different parameters for visual odometry to test its performance on the same dataset sequence.

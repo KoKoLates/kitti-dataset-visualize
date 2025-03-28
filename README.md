@@ -61,7 +61,8 @@ Matching the disparity map by stereo vision with `BM` and `SGBM` matcher respect
   <img src="./assets/depth_map.png" alt="depth map" width="600">
 </div>
 
-## References
-
-- [kitti dataset](https://www.cvlibs.net/datasets/kitti/)
-- [visual odometry](https://en.wikipedia.org/wiki/Visual_odometry)
+`cv2.solvePnPRansac` function solves this problem by minimizing the reprojection error, which measures how well the projected 3D points align with the observed 2D keypoints
+<div align="center">
+  <img src="./assets/monocular.png" alt="monocular" width="350" />
+  <img src="./assets/stereo.png" alt="stereo" width="350" />
+</div>
