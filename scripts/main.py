@@ -19,9 +19,9 @@ def main() -> None:
         [2.15, 0.9, -0.23], [2.15, -0.9, -0.23], [-1.95, -0.9, -0.23], [-1.95, 0.9, -0.23]
     ])
 
-    track_path = rospy.get_param("track", "")
-    calib_path = rospy.get_param("calib", "")
-    value_path = rospy.get_param("value", "")
+    track_path = rospy.get_param("track", "DEFAULT_TRACK_PATH")
+    calib_path = rospy.get_param("calib", "DEFAULT_CALIB_PATH")
+    value_path = rospy.get_param("value", "DEFAULT_VALUE_PATH")
 
     track = read_obj(track_path)
     calib = Calibration(calib_path, from_video=True)

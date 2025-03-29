@@ -1,8 +1,8 @@
 <launch>
     <!-- arguments for the dataset settings -->
-    <arg name="calib" default="" />
-    <arg name="track" default="" />
-    <arg name="value" default="" />
+    <arg name="track" default="DEFAULT_TRACK_PATH" />
+    <arg name="calib" default="DEFAULT_CALIB_PATH" />
+    <arg name="value" default="DEFAULT_VALUE_PATH" />
 
     <!-- kitti node -->
     <node pkg="kitti_dataset_visualize" type="main.py" name="kitti_node">
