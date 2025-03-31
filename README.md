@@ -83,14 +83,18 @@ To estimate motion between two frames, it is essential to extract and match feat
 After obtaining 3D points in camera coordinate by stereo depth estimation, we need to estimate the camera motion by aligning these 3D points with their corresponding 2D observations in the second image.
 
 $$
-\mathbf p'=\begin{bmatrix}u' \\\ v'  \\\ 1 \end{bmatrix}\sim \mathbf K(R\mathbf P_c+t)
+\mathbf p'=\begin{bmatrix}
+  u' \\
+  v' \\
+  1 \\
+\end{bmatrix} \sim \mathbf K(R\mathbf P_c+t)
 $$
 
 This equation forms the basis of the `PnP` problem: given 3D-2D correspondences $(\mathbf P_c, \mathbf p')$ 
 , and estimate $R$ and $t$. The `cv2.solvePnPRansac` function solves this problem by minimizing the reprojection error, which measures how well the projected 3D points align with the observed 2D keypoints:
 
 $$
-\sum_i||\mathbf p_i'-\pi(R\mathbf P_{c_i}-t)||^2
+\sum_i || \mathbf p_i'-\pi(R\mathbf P_{c_i}-t) || ^2
 $$
 
 Where $\pi(\cdot)$ is the projection function. **RANSAC (Random Sample Consensus)** is applied to improve robustness by iteratively selecting random subsets of correspondences, solving transformation and discarding outliers.
