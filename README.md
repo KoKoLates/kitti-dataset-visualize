@@ -83,7 +83,7 @@ To estimate motion between two frames, it is essential to extract and match feat
 After obtaining 3D points in camera coordinate by stereo depth estimation, we need to estimate the camera motion by aligning these 3D points with their corresponding 2D observations in the second image.
 
 $$
-\mathbf p'=\begin{bmatrix}u'\\ v'\\ 1 \end{bmatrix}\sim \mathbf K(R\mathbf P_c+t)
+\mathbf p'=\begin{bmatrix}u' \\\ v'  \\\ 1 \end{bmatrix}\sim \mathbf K(R\mathbf P_c+t)
 $$
 
 This equation forms the basis of the `PnP` problem: given 3D-2D correspondences $(\mathbf P_c, \mathbf p')$ 
