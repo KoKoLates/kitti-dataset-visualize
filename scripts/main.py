@@ -6,6 +6,7 @@ from misc import *
 from publisher import *
 from collector import *
 
+from dotenv import load_dotenv
 from sensor_msgs.msg import Image, PointCloud2
 
 
@@ -19,9 +20,11 @@ def main() -> None:
         [2.15, 0.9, -0.23], [2.15, -0.9, -0.23], [-1.95, -0.9, -0.23], [-1.95, 0.9, -0.23]
     ])
 
-    track_path = rospy.get_param("track", "DEFAULT_TRACK_PATH")
-    calib_path = rospy.get_param("calib", "DEFAULT_CALIB_PATH")
-    value_path = rospy.get_param("value", "DEFAULT_VALUE_PATH")
+    load_dotenv()
+
+    track_path = os.getenv('track_path')    # Path to the objects annotation file
+    calib_path = os.getenv('calib_path')    # Path to the folder of calibration files (camera and velodyne)
+    value_path = os.getenv('value_path')    # Path to fhe folder of all sensors data (IMU, GPS, camera, and velodyne)
 
     track = read_obj(track_path)
     calib = Calibration(calib_path, from_video=True)
