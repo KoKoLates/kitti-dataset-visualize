@@ -1,13 +1,14 @@
 # Kitti Dataset Visualization
 
-This repository visualizes the dataset using a point cloud map, the distances between detected objects, the trajectories of moving objects, and annotated bounding boxes in RViz with ROS noetic. It also implements visual odometry using stereo depth estimation.
+`dataset visualize`、`visual odometry`、`stereo depth estimation`
 
+This repository visualizes datasets using a point cloud map, displaying distances between detected objects, trajectories of moving objects, and annotated bounding boxes in `RViz` using `ROS Noetic`. It also implements visual odometry based on stereo depth estimation.
 
 ## Dataset Visualization
 
-This section processes raw data from multiple sensors, including a camera, IMU, GPS, and LiDAR, from the dataset. It creates collectors and publishers in ROS to publish the processed data using visualization tools. The published topics include:
+This section processes raw data from multiple sensors including camera, IMU, GPS, and LiDAR within the dataset. It sets up data collectors and ROS publishers to broadcast the processed data for visualization. The published topics include:
 
-- Multiple Sensors
+- Multiple Sensor Data
 - Annotated Detection Bounding Boxes
 - Distances Between Objects and Their Trajectories
 
@@ -17,17 +18,13 @@ This section processes raw data from multiple sensors, including a camera, IMU, 
   <img src="./assets/bbox.png" alt="bounding_boxes" width="700">
 </div>
 
-Please ensure that all required datasets are prepared and that the paths to the corresponding files and folders are correctly set in the `rosparam` file located at [launch/main.launch](./launch/main.launch). Alternatively, you can set the default path directly in the main function using:
-
-```python
-rospy.get_param('param_name', 'default path of file of folder')
-```
+Ensure that all required datasets are prepared and that the paths to corresponding files and folders are correctly set in the `.env` file. Adjust the paths according to your setup to ensure proper functionality.
 
 There are three paths you need to be aware of: 
 
-1. `calib_path`: Stores the file for camera and Velodyne calibrations.
-2. `track_path`: The file containing annotated objects tracked in each frame.
-3. `value_path`: Stores the path to the folder containing all sensor data, such as images, Velodyne points, and OXTS data.
+1. `calib_path`: Path to the folder of calibration files (camera and velodyne).
+2. `track_path`: Path to the objects annotation file.
+3. `value_path`: Path to fhe folder of all sensors data (IMU, GPS, camera, and velodyne).
 
 Once the parameters and dataset are properly set up, you can compile the package using `catkin_make` and launch it with `roslaunch`. This will start the ROS master, the necessary nodes, and RViz in the same terminal.
 
@@ -41,15 +38,15 @@ Before running the command, ensure that your shell can recognize the packages by
 source devel/setup.bash
 ```
 
-To avoid having to source this manually every time, you can add the following line to your `.bashrc` file
+To avoid having to source this manually every time, you can add the following line to your `~/.bashrc` file.
 
 ## Visual Odometry
 
-This section utilizes stereo images captured from the KITTI dataset to predict depth information and applies feature-based visual odometry algorithms to estimate the motion throughout the sequence.
+This section applies stereo images from the KITTI dataset to estimate depth information and applies feature-based visual odometry algorithms to track motion throughout the sequence.
 
-* Disparity Map of Stereo Vision
-* Depth Estimation
-* Visual Odometry and Accuracy Metrics
+- Disparity Maps from Stereo Vision
+- Depth Estimation
+- Visual Odometry with Accuracy Metrics
 
 <div align="center">
   <img src="./assets/left_image.png" alt="original left image" width="600">
@@ -82,22 +79,15 @@ To estimate motion between two frames, it is essential to extract and match feat
 
 After obtaining 3D points in camera coordinate by stereo depth estimation, we need to estimate the camera motion by aligning these 3D points with their corresponding 2D observations in the second image.
 
-$$
-\mathbf p'=\begin{bmatrix}
-  u' \\
-  v' \\
+```math
+\textbf p=\begin{bmatrix}
+  u \\
+  v \\
   1 \\
-\end{bmatrix} \sim \mathbf K(R\mathbf P_c+t)
-$$
+\end{bmatrix} \sim \textbf K(R\textbf P_c+t)
+```
 
-This equation forms the basis of the `PnP` problem: given 3D-2D correspondences $(\mathbf P_c, \mathbf p')$ 
-, and estimate $R$ and $t$. The `cv2.solvePnPRansac` function solves this problem by minimizing the reprojection error, which measures how well the projected 3D points align with the observed 2D keypoints:
-
-$$
-\sum_i || \mathbf p_i'-\pi(R\mathbf P_{c_i}-t) || ^2
-$$
-
-Where $\pi(\cdot)$ is the projection function. **RANSAC (Random Sample Consensus)** is applied to improve robustness by iteratively selecting random subsets of correspondences, solving transformation and discarding outliers.
+This expression forms the foundation of the `Perspective-n-Point (PnP)` problem: given a set of 3D–2D correspondences $(\textbf P_c, \textbf p)$, the goal is to estimate the camera pose, represented by rotation $R$ and translation $t$. In this project, I also include [**notes on motion estimation**](./notebook/README.md) between two image frames. To solve the PnP problem, the `cv2.solvePnPRansac` function is used. This method incorporates **RANSAC (Random Sample Consensus)** to enhance robustness by iteratively selecting random subsets of correspondences, estimating the transformation, and rejecting outliers.
 
 <div align="center">
   <img src="./assets/monocular.png" alt="monocular" width="350" />
