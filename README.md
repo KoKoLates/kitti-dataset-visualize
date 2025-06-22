@@ -80,14 +80,10 @@ To estimate motion between two frames, it is essential to extract and match feat
 After obtaining 3D points in camera coordinate by stereo depth estimation, we need to estimate the camera motion by aligning these 3D points with their corresponding 2D observations in the second image.
 
 ```math
-\textbf p=\begin{bmatrix}
-  u \\
-  v \\
-  1 \\
-\end{bmatrix} \sim \textbf K(R\textbf P_c+t)
+\textbf p=\begin{bmatrix} u \\v \\1 \\\end{bmatrix} \sim \textbf K(R\textbf P_c+t)
 ```
 
-This expression forms the foundation of the `Perspective-n-Point (PnP)` problem: given a set of 3D–2D correspondences $(\textbf P_c, \textbf p)$, the goal is to estimate the camera pose, represented by rotation $R$ and translation $t$. In this project, I also include [**notes on motion estimation**](./notebook/README.md) between two image frames. To solve the PnP problem, the `cv2.solvePnPRansac` function is used. This method incorporates **RANSAC (Random Sample Consensus)** to enhance robustness by iteratively selecting random subsets of correspondences, estimating the transformation, and rejecting outliers.
+This expression forms the foundation of the `Perspective-n-Point (PnP)` problem: given 3D–2D correspondences $(\textbf P_c, \textbf p)$, the goal is to estimate the camera pose, represented by rotation $R$ and translation $t$. In this project, I also include [**notes on motion estimation**](./notebook/README.md) between two image frames. To solve the PnP problem, the `cv2.solvePnPRansac` function is used. This method incorporates **RANSAC (Random Sample Consensus)** to enhance robustness by iteratively selecting random subsets of correspondences, estimating the transformation, and rejecting outliers.
 
 <div align="center">
   <img src="./assets/monocular.png" alt="monocular" width="350" />
