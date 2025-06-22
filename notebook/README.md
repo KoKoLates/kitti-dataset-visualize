@@ -110,11 +110,67 @@ In practice, however, we often obtain more than 8 matched pairs through feature 
 However, since the matches are often affected by noise and outliers, we typically use **Random Sample Consensus (RANSAC)** instead of a simple least squares approach in practice.
 
 ### Decompose Essential Matrix
+Given $t^\wedge$ is a skew-symmetric matrix, and $R$ is an orthonormal matrix, it’s possible to decouple $t^\wedge$ and $R$ from essential matrix $E$ through `singular value decomposition`. 
 
+```math
+E=U\Sigma V^\top
+```
+
+The essential matrix $E$ has **two equal non-zero singular values** and one zero singular value like $(\sigma, \sigma, 0)$.Because $E$ is defined only up to scale, we may, without loss of generality, normalize these singular values to $(1, 1, 0)$. Strictly speaking, the singular values are $(\|t \|, \|t\|, 0)$, where $t$ is the translation vector, but in epipolar geometry the scale of $t$ is ambiguous, so we customarily set $\|t\|=1$. We will not prove this property here, but it can be derived by examining the structure $E^\top E$ and observe the eigenvalues of $t^{\wedge \top}t^\wedge$ matrix
+
+```math
+E^\top E=(t^\wedge R)^\top(t^\wedge R)=R^\top t^{\wedge\top}t^\wedge R
+```
+
+we can have a singular value decomposition of essential matrix
+
+```math
+E =U\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0&0&0\end{bmatrix}V^\top=t^\wedge R
+```
+
+we can also decompose $\Sigma $ matrix as: 
+
+```math
+\Sigma=\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0&0&0\end{bmatrix}=\begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0&0&0\end{bmatrix}\begin{bmatrix} 0 & -1& 0 \\ 1 & 0 & 0 \\ 0&0&1\end{bmatrix}
+```
+
+In fact, we can observe that the first matrix in this product represents a skew-symmetric matrix corresponding to the cross product with the `unit Z-axis vector`. This matrix maps any vector parallel to the Z-axis to zero, and rotates vectors in the XY-plane counterclockwise by 90 degrees.
+
+It is precisely this **rotation property in the XY-plane** that leads to the introduction of the matrix $W$ in the decomposition of the essential matrix. The matrices $W$ and $W^\top$ help reconcile the structural differences between the SVD bases $(U, \Sigma, V)$ and the desired **rotation and translation** components. More precisely, they embody the **singular value structure $(\sigma, \sigma, 0)$** of the essential matrix and serve as the **minimal rotational factors** needed to align the SVD components with physically meaningful motion parameters—namely, the translation direction and rotation matrix.
+
+```math
+E=U\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0&0&0\end{bmatrix}V^\top=U\begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0&0&0\end{bmatrix}\begin{bmatrix} 0 & -1& 0 \\ 1 & 0 & 0 \\ 0&0&1\end{bmatrix}V^\top \\=U\begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0&0&0\end{bmatrix}U^\top U\begin{bmatrix} 0 & -1& 0 \\ 1 & 0 & 0 \\ 0&0&1\end{bmatrix}V^\top
+```
+
+Now, we are ready to decompose the essential matrix. (Notes that the translation vector is given by the **third column** of the matrix $U$ if normalized)
+
+```math
+t_1^\wedge = U\begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0&0&0\end{bmatrix}U^\top=\Big( U\begin{bmatrix}0 \\  0 \\ 1 \end{bmatrix}\Big)^\wedge \rightarrow t_1=U \begin{bmatrix}0 \\  0 \\ 1 \end{bmatrix}=u^\top
+
+\\
+
+R_1=U\begin{bmatrix} 0 & -1& 0 \\ 1 & 0 & 0 \\ 0&0&1\end{bmatrix}V^\top \triangleq UWV^\top
+```
+
+Similarly, since the matrix $\Sigma$ also allows for an alternative decomposition:
+
+```math
+\Sigma=\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0&0&0\end{bmatrix}=\begin{bmatrix} 0 & -1 & 0 \\ 1 & 0 & 0 \\ 0&0&0\end{bmatrix}\begin{bmatrix} 0 & 1& 0 \\ -1 & 0 & 0 \\ 0&0&1\end{bmatrix}
+```
+
+So we have $t_1, t_2$ and $R_1, R_2$. We can illustrate the four possible solutions resulting from the decomposition of the essential matrix. Fortunately, only one of these solutions yields a configuration in which the 3D point has `positive depth` in both camera coordinate systems. Therefore, by `triangulating` any matched point pair under each of the four possible solutions and checking whether the reconstructed 3D point lies in front of both cameras, we can uniquely determine the correct camera pose.
 
 <div align="center">
     <img src="../assets/four_outcomes.png" width="600">
 </div>
+
+In practice, after performing **Singular Value Decomposition** on the essential matrix, the resulting singular values may not be exactly $(\sigma, \sigma,0)$; instead, they might appear as $(\sigma_1, \sigma_2,\sigma_3)$ where $\sigma_1\geq \sigma_2\geq\sigma_3$. To enforce the ideal structure of the essential matrix, we can correct the singular values as follows:
+
+```math
+E=U\text{diag}\Big(\frac{\sigma_1+\sigma_2}{2}, \frac{\sigma_1+\sigma_2}{2}, 0\Big)V^\top
+```
+
+Of course, a simpler and commonly used approach is to directly set the singular values to $(1, 1, 0)$, since the essential matrix is defined **up to scale**.
 
 ### Homography
 Besides the essential matrix $E$ and the fundamental matrix $F$, another widely used matrix is the homography matrix $H$. When all feature points lie on a single plane, the homography matrix can be used to estimate the camera motion. It is typically computed using the `Direct Linear Transform (DLT)` algorithm, and then decomposed into a rotation matrix and translation vector using either numerical or analytical methods.
@@ -146,7 +202,7 @@ M=K \begin{bmatrix}R & t \end{bmatrix} \in \mathbb R^{3 \times 4}
 We derive the relationship between the 3D point $P$ and its corresponding feature point in pixel coordinates by expressing the projection matrix $M$ in terms of its row vectors and eliminating the scale factor $s$ from the homogeneous projection equation.
 
 ```math
-s\begin{bmatrix}u\\ v\\ 1 \end{bmatrix}=M\begin{bmatrix}X\\ Y\\ Z\\1 \end{bmatrix}=\begin{bmatrix}m_1^\top\\ m_2^\top \\m_3^\top \end{bmatrix}\begin{bmatrix}X\\ Y\\ Z\\1 \end{bmatrix} =\begin{bmatrix}m_1^\top\\ m_2^\top \\m_3^\top \end{bmatrix}P
+s\begin{bmatrix}u \\ v\\ 1 \end{bmatrix}=M\begin{bmatrix}X\\ Y\\ Z\\1 \end{bmatrix}=\begin{bmatrix}m_1^\top\\ m_2^\top \\m_3^\top \end{bmatrix}\begin{bmatrix}X\\ Y\\ Z\\1 \end{bmatrix} =\begin{bmatrix}m_1^\top\\ m_2^\top \\m_3^\top \end{bmatrix}P
 ```
 
 ```math
