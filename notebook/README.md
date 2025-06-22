@@ -20,48 +20,48 @@ The three points $O_1,O_2$ and $P$ define a plane known as the `epipolar plane`.
     <img src="../assets/epipolar_geometry.png" width="600"/>
 </div>
 
-We know that the normal vector of the epipolar plane must be orthogonal to $p2$, thus we could assume that:
+We know that the normal vector of the epipolar plane must be orthogonal to $p2$ (on vector $\textbf{x}_2$), therefore we can assume that:
 
 ```math
-\bold x_2\cdot(t\times \bold x_2)=0
+\textbf{x}_2 \cdot (t \times \textbf{x}_2)=0
 ```
 
 Let’s expand the constraint in matrix form and represent the cross product using a `skew-symmetric matrix`.
 
 ```math
-\begin{pmatrix}x_2&y_2&z_2 \end{pmatrix}\begin{pmatrix}0&-t_z&t_y\\ t_z&0&-t_x\\-t_y&t_x&0 \end{pmatrix}\begin{pmatrix} x_2\\ y_2\\ z_2\end{pmatrix}=0
+\begin{pmatrix}x_2 & y_2 & z_2 \end{pmatrix}\begin{pmatrix}0&-t_z&t_y \\ t_z&0&-t_x \\ -t_y&t_x&0 \end{pmatrix}\begin{pmatrix} x_2 \\ y_2 \\ z_2\end{pmatrix}=0
 ```
 
-Remember that the transformation between two image frames: $p_2=Rp_1+t$, and write it in matrix form will be like:
+Remember that the transformation between two image frames is: $p_2=Rp_1+t$. Write it in matrix form will be like:
 
 ```math
-\begin{pmatrix}x_2\\ y_2 \\ z_2 \end{pmatrix}=\begin{pmatrix} r_{11}&r_{12}&r_{13}\\r_{21}&r_{22}&r_{23}\\r_{31}&r_{32}&r_{33}\end{pmatrix}\begin{pmatrix}x_1 \\ y_1 \\z_1 \end{pmatrix}+\begin{pmatrix} t_x\\ t_y\\ t_z\end{pmatrix}
+\begin{pmatrix}x_2 \\ y_2 \\ z_2 \end{pmatrix}=\begin{pmatrix} r_{11}&r_{12}&r_{13} \\ r_{21}&r_{22}&r_{23} \\ r_{31}&r_{32}&r_{33}\end{pmatrix}\begin{pmatrix}x_1 \\ y_1 \\z_1 \end{pmatrix}+\begin{pmatrix} t_x \\ t_y \\ t_z\end{pmatrix}
 ```
 
-so we can now combine two equation, and replace a $p2$ in constraint with transformation relation.
+so we can now combine two equations, and replace a $p2$ in constraint with transformation relation.
 
 ```math
-\begin{pmatrix}x_2 &y_2&z_2 \end{pmatrix}\begin{pmatrix}0&-t_z&t_y\\t_z&0&-t_x\\-t_y&t_x&0 \end{pmatrix}\begin{pmatrix} r_{11}&r_{12}&r_{13}\\r_{21}&r_{22}&r_{23}\\r_{31}&r_{32}&r_{33}\end{pmatrix}\begin{pmatrix}x_1 \\ y_1 \\ z_1 \end{pmatrix}=0
+\begin{pmatrix}x_2 &y_2&z_2 \end{pmatrix}\begin{pmatrix}0&-t_z&t_y \\ t_z&0&-t_x \\ -t_y&t_x&0 \end{pmatrix}\begin{pmatrix} r_{11}&r_{12}&r_{13}\\ r_{21}&r_{22}&r_{23}\\ r_{31}&r_{32}&r_{33}\end{pmatrix}\begin{pmatrix}x_1 \\ y_1 \\ z_1 \end{pmatrix}=0
 ```
 
 in matrix form: 
 
 ```math
-\bold x_2^\top t^\wedge R \bold x_1= \bold x_2^\top E \bold x_1=0
+\textbf x_2^\top t^\wedge R \textbf x_1= \textbf x_2^\top E \textbf x_1=0
 ```
 
 We call $E$ the `essential matrix`, which is defined as the product of the translation vector in skew-symmetric matrix form and the rotation matrix. In later sections, we will use matched point pairs to estimate the essential matrix and then decompose it back into the translation vector and rotation matrix. This allows us to recover the relative motion between the two frames.
 
-Note that $\bold x_1$ and $\bold x_2$ represent the 3D positions (or projective vector) of a scene point with respect to the left and right camera coordinate frames, respectively. In addition, we also know the 2D image coordinates of the corresponding points in both views:
+Note that $\textbf x_1$ and $\textbf x_2$ represent the 3D positions (or projective vector) of a scene point with respect to the left and right camera coordinate frames, respectively. In addition, we also know the 2D image coordinates of the corresponding points in both views:
 
 ```math
-\bold p \simeq z\bold p = K\bold x \rightarrow \bold x=K^{-1}p
+\textbf p \simeq z \textbf p = K \textbf x \rightarrow \textbf x=K^{-1}p
 ```
 
 So we can rewrite epipolar constraint:
 
 ```math
-\bold x_2^\top E\bold x_1=\bold p_2^\top K^{-\top}EK^{-1}\bold p_1=\bold p_2^\top F\bold p_1=0
+\textbf x_2^\top E \textbf x_1= \textbf p_2^\top K^{-\top}EK^{-1} \textbf p_1= \textbf p_2^\top F \textbf p_1=0
 ```
 
 Here, we refer to $F$ as the `fundamental matrix`. The main difference between the `essential matrix` $E$ and the `fundamental matrix` $F$ lies in the presence of the camera intrinsic parameters. While the essential matrix operates in normalized camera coordinates, the fundamental matrix relates pixel coordinates and incorporates the `intrinsic calibration matrices` $K$.
@@ -116,7 +116,7 @@ Given $t^\wedge$ is a skew-symmetric matrix, and $R$ is an orthonormal matrix, i
 E=U\Sigma V^\top
 ```
 
-The essential matrix $E$ has **two equal non-zero singular values** and one zero singular value like $(\sigma, \sigma, 0)$.Because $E$ is defined only up to scale, we may, without loss of generality, normalize these singular values to $(1, 1, 0)$. Strictly speaking, the singular values are $(\|t \|, \|t\|, 0)$, where $t$ is the translation vector, but in epipolar geometry the scale of $t$ is ambiguous, so we customarily set $\|t\|=1$. We will not prove this property here, but it can be derived by examining the structure $E^\top E$ and observe the eigenvalues of $t^{\wedge \top}t^\wedge$ matrix
+The essential matrix $E$ has **two equal non-zero singular values** and one zero singular value like $(\sigma, \sigma, 0)$.Because $E$ is defined only up to scale, we may, without loss of generality, normalize these singular values to $(1, 1, 0)$. Strictly speaking, the singular values are $(\mathbf{|t|}, \mathbf{|t|}, 0)$, where $t$ is the translation vector, but in epipolar geometry the scale of $t$ is ambiguous, so we customarily set $\mathbf{|t|}=1$. We will not prove this property here, but it can be derived by examining the structure $E^\top E$ and observe the eigenvalues of $t^{\wedge \top}t^\wedge$ matrix
 
 ```math
 E^\top E=(t^\wedge R)^\top(t^\wedge R)=R^\top t^{\wedge\top}t^\wedge R
@@ -128,7 +128,7 @@ we can have a singular value decomposition of essential matrix
 E =U\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0&0&0\end{bmatrix}V^\top=t^\wedge R
 ```
 
-we can also decompose $\Sigma $ matrix as: 
+we can also decompose $\Sigma$ matrix as: 
 
 ```math
 \Sigma=\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0&0&0\end{bmatrix}=\begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0&0&0\end{bmatrix}\begin{bmatrix} 0 & -1& 0 \\ 1 & 0 & 0 \\ 0&0&1\end{bmatrix}
@@ -146,9 +146,8 @@ Now, we are ready to decompose the essential matrix. (Notes that the translation
 
 ```math
 t_1^\wedge = U\begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0&0&0\end{bmatrix}U^\top=\Big( U\begin{bmatrix}0 \\  0 \\ 1 \end{bmatrix}\Big)^\wedge \rightarrow t_1=U \begin{bmatrix}0 \\  0 \\ 1 \end{bmatrix}=u^\top
-
-\\
-
+```
+```math
 R_1=U\begin{bmatrix} 0 & -1& 0 \\ 1 & 0 & 0 \\ 0&0&1\end{bmatrix}V^\top \triangleq UWV^\top
 ```
 
@@ -184,7 +183,7 @@ Homography plays a critical role in SLAM applications, especially in cases where
 ### Monocular Initialization
 Because the essential matrix is defined up to scale, the translation vector $t$ recovered from its decomposition inherits this scale ambiguity, whereas the rotation matrix does not. Multiplying $t$ by any non‑zero scalar still produces a valid decomposition, yet its true length remains unknown. To handle this, we usually normalize $t$ to unit length. In monocular case, this normalization fixes an arbitrary scale; all 3D landmarks are then expressed in that unit. This step is known as `monocular initialization`.
 
-Besides, if the camera motion during initialization is pure rotation($t=0$), the essential matrix collapses to zero, making it impossible to recover $R$ from the epipolar constraint. Although $R$ can still be estimated via a homography, the absence of translation prevents triangulation of feature points, so no 3D structure can be initialized. Therefore, monocular initialization is impossible without some translational motion.
+Besides, if the camera motion during initialization is pure rotation ($t=0$), the essential matrix collapses to zero, making it impossible to recover $R$ from the epipolar constraint. Although $R$ can still be estimated via a homography, the absence of translation prevents triangulation of feature points, so no 3D structure can be initialized. Therefore, monocular initialization is impossible without some translational motion.
 
 ## 3D-2D: Perspective-n-Points (PnP) Problems
 **Perspective-n-Point (PnP)** is a method used to estimate camera motion from known 3D points and their corresponding 2D image projections. The 3D coordinates of the points can be obtained through triangulation, depth estimation, or other sensors. Therefore, PnP is commonly used in **stereo** or **RGB-D** visual odometry. For **monocular** systems, however, an initialization step is required to obtain scale information.
@@ -206,13 +205,18 @@ s\begin{bmatrix}u \\ v\\ 1 \end{bmatrix}=M\begin{bmatrix}X\\ Y\\ Z\\1 \end{bmatr
 ```
 
 ```math
-u=\frac{su}{s}=\frac{m_1^\top\cdot P}{m_3^\top \cdot P}\\ v=\frac{sv}{s}=\frac{m_2^\top\cdot P}{m_3^\top \cdot P}
+u=\frac{su}{s}=\frac{m_1^\top\cdot P}{m_3^\top \cdot P}
+```
+```math
+v=\frac{sv}{s}=\frac{m_2^\top\cdot P}{m_3^\top \cdot P}
 ```
 
 Now that we have obtained two constraints, we can organize them into a **homogeneous system of equations**. This formulation is beneficial for analyzing the system’s properties and facilitates the subsequent solution process.
 
 ```math
-(m_1^\top-um^\top_3)\cdot P=0, 
+(m_1^\top-um^\top_3)\cdot P=0
+```
+```math
 (m_2^\top-vm^\top_{3})\cdot P=0
 ```
 
@@ -224,7 +228,7 @@ P_1^\top&0^\top&-u_1P_1^\top\\
 \vdots & \vdots & \vdots \\
 P_n^\top&0^\top&-u_nP_n^\top\\
 0^\top&P_n^\top&-v_nP_n^\top \\
-\end{bmatrix} \begin{bmatrix} m_1\\m_2\\m_3 \end{bmatrix} = Q\cdot M=\bold 0
+\end{bmatrix} \begin{bmatrix} m_1\\m_2\\m_3 \end{bmatrix} = Q\cdot M=\textbf 0
 ```
 
 Here $Q$ is known (it could be computed by known correspondences). $M$ is unknown and composed with intrinsic and extrinsic matrix, we are going to obtain it through solving the linear equation. 
@@ -252,7 +256,7 @@ s_i\begin{bmatrix}u_i\\v_i\\1 \end{bmatrix}=K\exp(\xi^\wedge)\begin{bmatrix}X_i\
 Due to the unknown camera pose and the presence of noise in the observed feature points, the projection equation cannot be satisfied exactly, there will be some error. Therefore, we formulate a least squares problem by summing the individual errors and seek the optimal camera pose that minimizes this error. In the context of PnP, this process is often referred to as a form of `Bundle Adjustment`, where the goal is to minimize the `reprojection error` between the observed 2D image points and the projected 3D points.
 
 ```math
-\xi^*=\argmin_\xi\frac{1}2\sum_{i=1}^n \Big\|p_i-\frac{1}s_iK\exp(\xi^\wedge)P_i \Big\|^2_2
+\xi^*=\arg\min_\xi\frac{1}2\sum_{i=1}^n \Big\|p_i-\frac{1}s_iK\exp(\xi^\wedge)P_i \Big\|^2_2
 ```
 
 By leveraging Lie algebra, we can formulate an unconstrained optimization problem, which can be efficiently solved using optimization algorithms such as `gradient descent`, `Gauss-Newton`, or the `Levenberg–Marquardt method`. A critical aspect of this optimization process is the computation of the derivative (Jacobian) of each error term with respect to the optimization variables. While numerical differentiation is always an option, deriving the analytical form of the Jacobian offers several key advantages like higher accuracy, and improved convergence.
