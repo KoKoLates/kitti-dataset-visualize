@@ -29,7 +29,7 @@ There are three paths you need to be aware of:
 Once the parameters and dataset are properly set up, you can compile the package using `catkin_make` and launch it with `roslaunch`. This will start the ROS master, the necessary nodes, and RViz in the same terminal.
 
 ```shell
-roslaunch kitt__dataset_visualize launch/main.launch
+roslaunch kitti_dataset_visualize launch/main.launch
 ```
 
 Before running the command, ensure that your shell can recognize the packages by sourcing the workspace setup file:
